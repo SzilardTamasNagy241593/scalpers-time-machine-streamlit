@@ -222,4 +222,5 @@ with gr.Blocks() as help_ui:
 
 tabs = gr.TabbedInterface([home_ui, help_ui], tab_names=["Home", "Help"])
 
-tabs.launch()
+if __name__ == "__main__":
+    tabs.launch()
