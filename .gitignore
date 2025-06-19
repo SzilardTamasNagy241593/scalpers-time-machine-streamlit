@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+*.pyd
+*.pyo
+
+# Poetry
+poetry.lock
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# Coverage
+htmlcov/
+.coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test & temp files
+*.log
+.env
+*.sqlite3
+*.db
+
+# Docs
+docs/
