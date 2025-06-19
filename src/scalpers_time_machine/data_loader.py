@@ -21,15 +21,18 @@ def time_to_minutes(t):
     return t.hour * 60 + t.minute
 
 def load_data():
-    """Load, preprocess, and return cleaned stock data from the database."""
+    """Load, preprocess, and return cleaned stock data from the database or CSV."""
     db_url = os.getenv("DATABASE_URL")
-    if not db_url:
-        raise ValueError("DATABASE_URL is not set in .env file")
-
-    engine = create_engine(db_url)
-    query = f"SELECT * FROM {TABLE_NAME}"
-    df = pd.read_sql(query, con=engine, index_col="date_value", parse_dates=["date_value"])
-    logging.info("Data loaded from DB")
+    try:
+        if not db_url:
+            raise ValueError("DATABASE_URL is not set")
+        engine = create_engine(db_url)
+        query = f"SELECT * FROM {TABLE_NAME}"
+        df = pd.read_sql(query, con=engine, index_col="date_value", parse_dates=["date_value"])
+        logging.info("Data loaded from PostgreSQL")
+    except Exception as e:
+        logging.warning(f"DB load failed: {e}. Falling back to CSV.")
+        df = pd.read_csv("data/stock_daily_enriched.csv", index_col="date_value", parse_dates=["date_value"])
 
     # Convert times to minutes
     for col in ['best_buy_time', 'best_sell_time']:
